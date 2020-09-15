@@ -42,6 +42,11 @@ const Services = {
     //展开更多评论
     moreComment(data, jiamiData) {
       return post("/moreComment", data, 2, jiamiData);
+    },
+
+    //我的--已发帖子
+    userYftz(data, jiamiData) {
+      return post("/userYftz", data, 2, jiamiData);
     }
   }
 };

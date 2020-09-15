@@ -30,7 +30,7 @@ export default {
   position: fixed;
   bottom: 100px;
   z-index: 99;
-  left: calc(50% + 505px);
+  left: calc(50% + 400px);
 
   .backTop {
     background: url("../assets/backTop.png") no-repeat;

@@ -32,7 +32,7 @@
                 <img src="../assets/shipin.png" alt />
                 <span>上传视频</span>
               </li>
-              <li>
+              <li @click="gotoArticle">
                 <img src="../assets/wenzhang.png" alt />
                 <span>写文章</span>
               </li>
@@ -113,6 +113,14 @@ export default {
       this.$router.push({
         name: "login"
       });
+    },
+
+    //跳转到写文章页面
+    gotoArticle() {
+      const goTo = this.$router.resolve({
+        path: "/writeArticle"
+      });
+      window.open(goTo.href, "_blank");
     }
   }
 };
@@ -135,6 +143,7 @@ a {
 
 .head {
   position: fixed;
+  z-index: 999;
   width: 100%;
   background-color: #fff;
 

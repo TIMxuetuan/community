@@ -61,6 +61,13 @@ module.exports = {
         changeOrigin: true,
         secure: false,
         pathRewrite: { "^/moreComment": "" }
+      },
+      //我的--已发帖子
+      "/userYftz": {
+        target: `${_CONFIG.api}/User/yftz`,
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { "^/userYftz": "" }
       }
     },
   },
