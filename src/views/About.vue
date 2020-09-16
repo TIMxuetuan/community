@@ -70,9 +70,18 @@ export default {
         if (res.event == 100) {
           console.log("res", res);
           this.miDataList = res;
+          this.disposeRichText(res);
         } else {
           console.log(res.msg);
         }
+      });
+    },
+
+    //处理富文本数据
+    disposeRichText(res) {
+      console.log("富文本", res);
+      res.list.map(item => {
+        console.log(item.wordse);
       });
     },
 

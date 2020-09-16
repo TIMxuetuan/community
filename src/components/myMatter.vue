@@ -6,6 +6,7 @@
         class="maMatter-item"
         v-for="(item, index) in userYftzList.list"
         :key="index"
+        @click="goToDetail(item)"
       >
         <div class="item-card">
           <img
@@ -20,8 +21,10 @@
           <div class="article-info">{{ item.create_time }}</div>
           <div class="article-info passed">已上线</div>
         </div>
+
+        <!--删除帖子-->
         <div class="article-operate">
-          <div class="delete"></div>
+          <div class="delete" @click.stop="deleteClick(item)"></div>
         </div>
       </div>
     </div>
@@ -37,11 +40,24 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      //跳转详情
+      goToDetail(item) {
+        this.$emit("goToDetail", item);
+      },
+
+      //删除帖子
+      deleteClick(item) {
+        this.$emit("deleteClick", item);
+      }
+    };
   }
 };
 </script>
 <style lang="scss" scoped>
+.maMatter {
+  background-color: #fff;
+}
 .maMatter-container {
   padding: 0 20px 48px;
   margin-top: 10px;

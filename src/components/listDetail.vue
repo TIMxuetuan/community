@@ -4,11 +4,7 @@
     <div class="left-content">
       <!--置顶帖子-->
       <div class="topInvitation" v-if="isTopPing">
-        <div
-          class="topInvitation-item"
-          v-for="(topItem, index) in miDataList.zd"
-          :key="index"
-        >
+        <div class="topInvitation-item" v-for="(topItem, index) in miDataList.zd" :key="index">
           <div class="topping">置顶</div>
           <div class="topping-text">{{ topItem.title }}</div>
           <div class="topping-time">{{ topItem.create_time }}</div>
@@ -25,11 +21,7 @@
         <!--用户头部信息-->
         <div class="title-user">
           <div class="title-user-left">
-            <img
-              v-if="item.img == '' || item.img == null"
-              src="../assets/no_comment.png"
-              alt
-            />
+            <img v-if="item.img == '' || item.img == null" src="../assets/no_comment.png" alt />
             <img v-else :src="item.img" alt />
           </div>
           <div class="title-user-right">
@@ -39,47 +31,46 @@
         </div>
 
         <!--内容部分 文字标题、描述之类-->
-        <div class="titleDescribe">{{ item.wordse }}</div>
-
-        <!--内容部分 包含文字、图片等-->
-        <div v-if="item.detailsListId == 2">
-          <div class="imageList">
-            <div
-              :class="
-                item.detailsList.length == 1
-                  ? 'imageList-two'
-                  : 'imageList-item'
-              "
-              v-for="(items, index) in item.detailsList"
-              :key="index"
-            >
-              <img :src="items.imgUrl" alt />
+        <div class="titleDescribe" v-html="item.wordse">
+          <!--内容部分 包含文字、图片等-->
+          <!-- <div v-if="item.detailsListId == 2">
+            <div class="imageList">
+              <div
+                :class="
+                  item.detailsList.length == 1
+                    ? 'imageList-two'
+                    : 'imageList-item'
+                "
+                v-for="(items, index) in item.detailsList"
+                :key="index"
+              >
+                <img :src="items.imgUrl" alt />
+              </div>
             </div>
-          </div>
-        </div>
+          </div> -->
 
-        <!--内容部分 包含文字、视频等     -->
-        <div v-if="item.detailsListId == 3">
-          <div class="videoStyle">
-            <video
-              :id="item.id"
-              preload="auto"
-              controlslist="nodownload"
-              controls
-              loop
-              :src="item.videoLists"
-              poster
-            ></video>
-            <!--"-->
-            <img
-              :data-id="item.id"
-              v-show="item.isImageShow"
-              @click="boFangClick($event, index)"
-              src="../assets/bofang.png"
-              class="boFang"
-              alt
-            />
-          </div>
+          <!--内容部分 包含文字、视频等     -->
+          <!-- <div v-if="item.detailsListId == 3">
+            <div class="videoStyle">
+              <video
+                :id="item.id"
+                preload="auto"
+                controlslist="nodownload"
+                controls
+                loop
+                :src="item.videoLists"
+                poster
+              ></video>
+              <img
+                :data-id="item.id"
+                v-show="item.isImageShow"
+                @click="boFangClick($event, index)"
+                src="../assets/bofang.png"
+                class="boFang"
+                alt
+              />
+            </div>
+          </div> -->
         </div>
 
         <!--底部信息 包含标签、评论、点赞功能等-->
@@ -93,7 +84,7 @@
             <div class="bottomLine-card">
               <img src="../assets/circle.svg" alt />
               <span>{{ item.labelRight }}</span>
-            </div> -->
+            </div>-->
           </div>
 
           <!--右边操作功能-->
@@ -313,7 +304,7 @@ export default {
   font-size: 18px;
   margin-top: 16px;
   line-height: 28px;
-  max-height: 56px;
+  // max-height: 56px;
   color: rgba(0, 0, 0, 0.8);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -322,6 +313,11 @@ export default {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   text-align: left;
+  ::v-deep img {
+    width: 590px;
+    height: 273px;
+    margin-top: 10px;
+  }
 }
 
 .imageList {

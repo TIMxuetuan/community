@@ -20,6 +20,13 @@ module.exports = {
         secure: false,
         pathRewrite: { "^/circleList": "" }
       },
+      //帖子类型列表
+      "/typeList": {
+        target: `${_CONFIG.api}/Category/typeList`,
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { "^/typeList": "" }
+      },
       //帖子列表
       "/documentList": {
         target: `${_CONFIG.api}/Document/documentList`,
@@ -68,7 +75,30 @@ module.exports = {
         changeOrigin: true,
         secure: false,
         pathRewrite: { "^/userYftz": "" }
+      },
+      //我的--删除帖子
+      "/deleteMy": {
+        target: `${_CONFIG.api}/User/delete`,
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { "^/deleteMy": "" }
+      },
+
+      //我的--上传图片
+      "/shangchuan": {
+        target: "https://www.zjtaoke.cn/trains2/uploadFiles",
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { "^/shangchuan": "" }
+      },
+
+      //内容发布--帖子
+      "/postedInvitation": {
+        target: `${_CONFIG.api}/User/posted`,
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { "^/postedInvitation": "" }
       }
-    },
-  },
+    }
+  }
 };

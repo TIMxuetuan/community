@@ -26,10 +26,11 @@
         </div>
 
         <!--内容部分 文字标题、描述之类-->
-        <div class="titleDescribe">{{ item.wordse }}</div>
+        <!-- <div class="titleDescribe">{{ item.wordse }}</div> -->
+        <div class="titleDescribe" v-html="item.wordse"></div>
 
         <!--内容部分 包含文字、图片等-->
-        <div v-if="item.detailsListId == 2">
+        <!-- <div v-if="item.detailsListId == 2">
           <div class="imageList">
             <div
               :class="
@@ -43,10 +44,10 @@
               <img :src="items.imgUrl" alt />
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!--内容部分 包含文字、视频等     -->
-        <div v-if="item.detailsListId == 3">
+        <!-- <div v-if="item.detailsListId == 3">
           <div class="videoStyle">
             <video
               :id="item.id"
@@ -57,7 +58,6 @@
               :src="item.videoLists"
               poster
             ></video>
-            <!--"-->
             <img
               :data-id="item.id"
               v-show="item.isImageShow"
@@ -67,7 +67,7 @@
               alt
             />
           </div>
-        </div>
+        </div> -->
 
         <!--底部信息 包含标签、评论、点赞功能等-->
         <div class="bottomLine">
@@ -295,15 +295,15 @@ export default {
   font-size: 18px;
   margin-top: 16px;
   line-height: 28px;
-  max-height: 56px;
+  min-height: 56px;
   color: rgba(0, 0, 0, 0.8);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-break: break-all;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  text-align: left;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+  // word-break: break-all;
+  // display: -webkit-box;
+  // -webkit-line-clamp: 2;
+  // -webkit-box-orient: vertical;
+  // text-align: left;
 }
 
 .imageList {

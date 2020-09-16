@@ -14,6 +14,12 @@ const Services = {
       return post("/circleList", data, 2);
     },
 
+    //帖子类型列表
+    typeList(data) {
+      console.log(postJson);
+      return post("/typeList", data, 2);
+    },
+
     //帖子列表
     documentList(data, jiamiData) {
       return post("/documentList", data, 2, jiamiData);
@@ -47,6 +53,16 @@ const Services = {
     //我的--已发帖子
     userYftz(data, jiamiData) {
       return post("/userYftz", data, 2, jiamiData);
+    },
+
+    //我的--删除帖子
+    deleteMy(data, jiamiData) {
+      return post("/deleteMy", data, 2, jiamiData);
+    },
+
+    //内容发布--发布帖子
+    postedInvitation(data, jiamiData) {
+      return post("/postedInvitation", data, 2, jiamiData);
     }
   }
 };

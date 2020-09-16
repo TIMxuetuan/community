@@ -2,7 +2,7 @@
   <div class="circleDetails">
     <!--头部组件-->
     <div class="aboutHead">
-      <forumHead></forumHead>
+      <forumHead :isPublish="isPublish"></forumHead>
     </div>
     <div class="container">
       <!--内容展示-->
@@ -76,6 +76,7 @@ export default {
   },
   data() {
     return {
+      isPublish: true, //是否展示头部发表
       userInfo: {}, //用户数据
       circleDates: {}, //从列表传递来的数据
       miDataList: [],
@@ -329,7 +330,7 @@ export default {
           this.disposeMore(value, res.list, this.remarkList.list);
           console.log("更多评论", value);
         } else {
-          console.log(res.msg);
+          _methods.tanChuangOk(this, res.msg);
         }
       });
     },
