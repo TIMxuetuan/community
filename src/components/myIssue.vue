@@ -159,8 +159,8 @@ export default {
         "emoticon", // 表情
         "image", // 插入图片
         "table", // 表格
-        "video", // 插入视频
-        "code", // 插入代码
+        // "video", // 插入视频
+        // "code", // 插入代码
         "undo", // 撤销
         "redo", // 重复
         "fullscreen" // 全屏

@@ -3,8 +3,13 @@
   <div class="center-detail">
     <div class="left-content">
       <!--置顶帖子-->
-      <div class="topInvitation" v-if="isTopPing">
-        <div class="topInvitation-item" v-for="(topItem, index) in miDataList.zd" :key="index">
+      <div class="topInvitation" v-if="miDataList.zd != ''">
+        <div
+          class="topInvitation-item"
+          v-for="(topItem, index) in miDataList.zd"
+          :key="index"
+          @click="goToDetail(topItem)"
+        >
           <div class="topping">置顶</div>
           <div class="topping-text">{{ topItem.title }}</div>
           <div class="topping-time">{{ topItem.create_time }}</div>
@@ -133,14 +138,11 @@ export default {
   props: {
     miDataList: {
       type: Object
-    },
-    isTopPing: {
-      type: Boolean,
-      default: false
     }
   },
   data() {
     return {
+      isTopPing: true,
       isShow: false
     };
   },

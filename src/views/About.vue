@@ -14,7 +14,6 @@
       <!--左边内容展示-->
       <listDetail
         :miDataList="miDataList"
-        :isTopPing="isTopPing"
         @goToDetail="goToDetail"
         @giveLikeClick="giveLikeClick"
       ></listDetail>
@@ -47,7 +46,6 @@ export default {
       page: 1,
       size: 10,
       miDataList: {},
-      isTopPing: true
     };
   },
   state: {
@@ -80,7 +78,7 @@ export default {
         if (res.event == 100) {
           console.log("res", res);
           this.miDataList = res;
-          this.disposeRichText(res);
+          // this.disposeRichText(res);
         } else {
           console.log(res.msg);
           this.isContentShow = true;

@@ -58,6 +58,7 @@ export default {
           });
         } else {
           console.log(res.msg);
+          _methods.tanChuang(this, res.msg);
         }
       });
     }
