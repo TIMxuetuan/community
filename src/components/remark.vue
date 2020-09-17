@@ -251,8 +251,9 @@ export default {
 
     replyClick2(value, type) {
       console.log(value, type);
-      value.ishf = type;
-      value.textarea = "";
+      this.$emit("replyClick2", value, type);
+      // value.ishf = type;
+      // value.textarea = "";
     },
 
     //点赞

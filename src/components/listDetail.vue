@@ -47,7 +47,7 @@
                 <img :src="items.imgUrl" alt />
               </div>
             </div>
-          </div> -->
+          </div>-->
 
           <!--内容部分 包含文字、视频等     -->
           <!-- <div v-if="item.detailsListId == 3">
@@ -70,7 +70,7 @@
                 alt
               />
             </div>
-          </div> -->
+          </div>-->
         </div>
 
         <!--底部信息 包含标签、评论、点赞功能等-->
@@ -120,6 +120,9 @@
           </div>
         </div>
       </div>
+
+      <!--没有更多数据-->
+      <div class="noMore">没有更多数据了</div>
     </div>
   </div>
 </template>
@@ -143,6 +146,7 @@ export default {
   },
   mounted() {
     this.Videostate();
+    console.log("miDataList");
   },
   methods: {
     //跳转详情页面
@@ -207,6 +211,15 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.noMore {
+  margin: 30px auto 0;
+  padding: 10px 0 20px;
+  font-size: 14px;
+  color: #999;
+  text-align: center;
+  background-color: #fff;
+}
+
 .center-detail {
   display: flex;
   justify-content: center;
@@ -314,9 +327,10 @@ export default {
   -webkit-box-orient: vertical;
   text-align: left;
   ::v-deep img {
-    width: 590px;
-    height: 273px;
+    // width: 590px;
+    // height: 273px;
     margin-top: 10px;
+    object-fit: cover;
   }
 }
 

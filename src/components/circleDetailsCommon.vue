@@ -1,7 +1,8 @@
 <!--话题列表页面用的 内容展示组件-->
 <template>
   <div class="center-detail">
-    <div class="left-content">
+    <div v-if="!miDataList">暂无数据</div>
+    <div v-else class="left-content">
       <!--帖子详情-->
       <div
         class="content-items"
@@ -9,14 +10,11 @@
         :key="index"
         @click="goToDetail(item)"
       >
+        <div class="contentItems-title">{{ item.title }}</div>
         <!--用户头部信息-->
         <div class="title-user">
           <div class="title-user-left">
-            <img
-              v-if="item.img == '' || item.img == null"
-              src="../assets/no_comment.png"
-              alt
-            />
+            <img v-if="item.img == '' || item.img == null" src="../assets/no_comment.png" alt />
             <img v-else :src="item.img" alt />
           </div>
           <div class="title-user-right">
@@ -44,7 +42,7 @@
               <img :src="items.imgUrl" alt />
             </div>
           </div>
-        </div> -->
+        </div>-->
 
         <!--内容部分 包含文字、视频等     -->
         <!-- <div v-if="item.detailsListId == 3">
@@ -67,7 +65,7 @@
               alt
             />
           </div>
-        </div> -->
+        </div>-->
 
         <!--底部信息 包含标签、评论、点赞功能等-->
         <div class="bottomLine">
@@ -80,7 +78,7 @@
             <div class="bottomLine-card">
               <img src="../assets/circle.svg" alt />
               <span>{{ item.labelRight }}</span>
-            </div> -->
+            </div>-->
           </div>
 
           <!--右边操作功能-->
@@ -93,7 +91,7 @@
             <!-- <div class="operationTwo layout textStyle">
               <img class="commentImg comUrl" src="../assets/res.svg" alt />
               <span>{{ item.comment }}</span>
-            </div> -->
+            </div>-->
 
             <!--点赞-->
             <div class="layout textStyle">
@@ -115,6 +113,10 @@
             </div>
           </div>
         </div>
+        <!--管理员删除按钮-->
+        <div class="adminDelete" v-if="isAdminShow">
+          <el-button type="danger" round @click="deleteEssay(item)">删除</el-button>
+        </div>
       </div>
     </div>
   </div>
@@ -132,15 +134,42 @@ export default {
       default: false
     }
   },
+  created() {
+    this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    this.circleDates = JSON.parse(localStorage.getItem("circleDates"));
+    // this.miDataList.push(list);
+  },
   data() {
     return {
-      isShow: false
+      isShow: false,
+      userInfo: {}, //用户数据
+      circleDates: {},
+      isAdminShow: false //是否显示管理员删除
     };
   },
   mounted() {
     this.Videostate();
+    this.isAdminDelete();
   },
   methods: {
+    //判断帖子是否能被管理员删除
+    isAdminDelete() {
+      let qz_admin = this.userInfo.qz_admin;
+      console.log("qz_admin", qz_admin);
+      console.log("this.circleDates", this.circleDates);
+      qz_admin.map(item => {
+        console.log(item);
+        if (item.id == this.circleDates.category_id) {
+          this.isAdminShow = true;
+        }
+      });
+    },
+
+    //点击删除按钮
+    deleteEssay(val) {
+      this.$emit("deleteEssay", val);
+    },
+
     //跳转详情页面
     goToDetail(item) {
       this.$emit("goToDetail", item);
@@ -201,6 +230,15 @@ export default {
 .center-detail {
   display: flex;
   justify-content: center;
+}
+
+.contentItems-title {
+  opacity: 0.8;
+  font-size: 32px;
+  color: #000;
+  line-height: 52px;
+  margin-bottom: 50px;
+  text-align: left;
 }
 
 .left-content {
@@ -423,5 +461,19 @@ export default {
 
 .comUrl {
   align-self: flex-end;
+}
+
+//管理员删除
+.adminDelete {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 14px;
+  margin: 10px 0;
+  .el-button {
+    width: 70px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0;
+  }
 }
 </style>

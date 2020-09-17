@@ -70,8 +70,14 @@ export default {
     },
 
     toTopicList(item) {
-      localStorage.setItem("circleListItem", JSON.stringify(item));
-      const goTo = this.$router.resolve({ path: "/about" });
+      console.log(item);
+      // localStorage.setItem("circleListItem", JSON.stringify(item));
+      const goTo = this.$router.resolve({
+        name: "About",
+        query: {
+          circleId: item.id
+        }
+      });
       window.open(goTo.href, "_blank");
     }
   }

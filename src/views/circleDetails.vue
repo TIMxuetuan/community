@@ -1,42 +1,51 @@
 <template>
-  <div class="circleDetails">
+  <div class="circleDetails" v-if="miDataList">
     <!--头部组件-->
     <div class="aboutHead">
       <forumHead :isPublish="isPublish"></forumHead>
     </div>
-    <div class="container">
+    <!--没有内容时，如帖子被删-->
+    <div v-if="isContentShow" v-cloak class="noContent">
+      <div>
+        <img src="../assets/lajitong.png" alt />
+      </div>
+      <div class="noContent-text">
+        内容已删除,去
+        <span @click="goToQuan">圈子</span>看看吧～
+      </div>
+    </div>
+
+    <!--有内容展示-->
+    <div class="container" v-else v-cloak>
       <!--内容展示-->
       <circleDetailsCommon
         :miDataList="miDataList"
         @giveLikeClick="giveLikeClick"
+        @deleteEssay="deleteEssay"
       ></circleDetailsCommon>
 
       <!--说说我的看法-->
-      <div class="myOpinion">
+      <div
+        class="myOpinion"
+        v-if="limitType == 4 || (limitType == 3 && authorId == userInfo.yg_id)"
+      >
         <div class="myOpinion-title">说说我的看法</div>
         <div v-if="!isLogin" class="myOpinion-none">登录后可以发表评论</div>
         <div v-else class="myOpinion-text">
-          <el-input
-            type="textarea"
-            :rows="3"
-            placeholder="请输入评论内容..."
-            v-model="textarea"
-          ></el-input>
+          <el-input type="textarea" :rows="3" placeholder="请输入评论内容..." v-model="textarea"></el-input>
           <div class="myOpinion-btn">
             <el-button
               type="danger"
               :disabled="textarea != '' ? false : true"
               round
               @click="issueClick"
-            >
-              发布
-            </el-button>
+            >发布</el-button>
           </div>
         </div>
       </div>
 
       <!--评论-->
-      <div class="remark">
+      <div class="remark" v-if="limitType == 4 || limitType == 3">
         <remark
           :remarkList="remarkList"
           @giveLikeClick="giveLikeClick"
@@ -45,6 +54,7 @@
           @openMornClick="openMornClick"
           @offMornClick="offMornClick"
           @replyClick="replyClick"
+          @replyClick2="replyClick2"
         ></remark>
       </div>
 
@@ -69,17 +79,23 @@ export default {
     remark: () => import("../components/remark")
   },
   created() {
-    this.circleDates = JSON.parse(localStorage.getItem("circleDates"));
+    // this.circleDates = JSON.parse(localStorage.getItem("circleDates"));
+    this.circleDates = JSON.parse(this.$route.query.circleDates);
+    this.circleId = this.$route.query.circleId;
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    console.log("circleDates", this.circleDates);
+    console.log("circleDates", this.circleDates, this.circleId);
     // this.miDataList.push(list);
   },
   data() {
     return {
+      isContentShow: false,
       isPublish: true, //是否展示头部发表
       userInfo: {}, //用户数据
-      circleDates: {}, //从列表传递来的数据
-      miDataList: [],
+      circleDates: "", //从列表传递来的数据
+      circleId: "", //圈子id
+      miDataList: [], //帖子详情数据
+      limitType: "", //控制评论回复是否展示
+      authorId: "", //作者id
       isLogin: true, //是否登录
       textarea: "",
       isDisabled: true,
@@ -96,7 +112,25 @@ export default {
   },
   methods: {
     ..._methods,
+    // 一级评论回复
     replyClick(value, type) {
+      if (this.limitType == 3 && this.authorId != this.userInfo.yg_id) {
+        console.log("进来");
+        _methods.tanChuang(this, "仅楼主可以回复");
+        return;
+      }
+      console.log(value, type, this.remarkList);
+      value.ishf = type;
+      value.textarea = "";
+    },
+
+    //二级以及多级评论回复
+    replyClick2(value, type) {
+      if (this.limitType == 3 && this.authorId != this.userInfo.yg_id) {
+        console.log("进来");
+        _methods.tanChuang(this, "仅楼主可以回复");
+        return;
+      }
       console.log(value, type, this.remarkList);
       value.ishf = type;
       value.textarea = "";
@@ -105,22 +139,25 @@ export default {
     //获取帖子详情
     getPostDetails() {
       let publicData = {
-        id: this.circleDates.id,
+        id: this.circleDates,
         roles: this.userInfo.roles,
         top: this.userInfo.top,
         yg_id: this.userInfo.yg_id,
         yg_name: this.userInfo.yg_name
       };
       let jiami = {
-        id: this.circleDates.id
+        id: this.circleDates
       };
       Services.loginApi.postDetails(publicData, jiami).then(res => {
         if (res.event == 100) {
           this.miDataList = res.date;
+          this.limitType = res.date[0].type;
+          this.authorId = res.date[0].yg_id;
           console.log("this.miDataList", this.miDataList);
           this.getCommentlist();
         } else {
           console.log(res.msg);
+          this.isContentShow = true;
         }
       });
     },
@@ -176,8 +213,26 @@ export default {
       console.log("this.remarkList", this.remarkList);
     },
 
+    /*
+    评论和回复事件的权限控制 
+     type：1  所有人不可回复；
+     type：2  阅读类；
+     type：3  仅楼主回复；
+     type：4  所有人可回复；
+    */
+    limitsControl() {
+      let limitType = this.miDataList[0].type;
+      console.log(limitType, limitType == 1);
+      if (limitType == 1) {
+        _methods.tanChuang(this, "所有人不可回复");
+        return;
+      }
+      return;
+    },
+
     //第一次参与评论的发布事件
     issueClick() {
+      console.log("this.miDataList", this.miDataList[0]);
       let publicData = {
         title_id: this.miDataList[0].id,
         comment: this.textarea,
@@ -348,6 +403,59 @@ export default {
     offMornClick(item, type) {
       item.comment_er = item.comment_er.slice(0, 2);
       item.isMoreShow = type;
+    },
+
+    //管理员删除帖子
+    deleteEssay(val) {
+      console.log(val);
+      this.$confirm("此操作将永久删除该文章, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.deleteClick(val);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+
+    //管理员--删除帖子
+    deleteClick(value) {
+      console.log("删除帖子", value);
+      let publicData = {
+        id: value.id,
+        roles: this.userInfo.roles,
+        top: this.userInfo.top,
+        yg_id: this.userInfo.yg_id,
+        yg_name: this.userInfo.yg_name
+      };
+      let jiami = {
+        id: value.id
+      };
+      Services.loginApi.deleteMy(publicData, jiami).then(res => {
+        if (res.event == 100) {
+          this.getPostDetails();
+          _methods.tanChuangOk(this, res.msg);
+        } else {
+          _methods.tanChuangOk(this, res.msg);
+        }
+      });
+    },
+
+    //跳去圈子列表
+    goToQuan() {
+      this.$router.push({
+        name: "About",
+        query: {
+          circleId: this.circleId
+        }
+      });
+      // window.open(goTo.href, "_blank");
     }
   }
 };
@@ -363,6 +471,28 @@ body {
 }
 </style>
 <style lang="scss" scoped>
+[v-cloak] {
+  display: none !important;
+}
+
+.noContent {
+  margin-top: 200px;
+  img {
+    width: 210px;
+    height: 210px;
+  }
+  .noContent-text {
+    color: #b2b9c6;
+    font-size: 20px;
+    margin-top: 14px;
+    letter-spacing: 1px;
+    span {
+      color: #1890ff;
+      cursor: pointer;
+    }
+  }
+}
+
 .circleDetails {
   position: relative;
   overflow: hidden;

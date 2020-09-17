@@ -2,8 +2,9 @@
   <div>
     <!--富文本和视频切换-->
     <div class="contentBtns-cut">
-      <div :style="isCut ? 'color:#FF594A' : 'color:#000'" @click="isCutClick(true)">文章</div>
-      <div :style="!isCut ? 'color:#FF594A' : 'color:#000'" @click="isCutClick(false)">视频</div>
+      <!-- @click="isCutClick(true)" 先舍弃、等做视频的时候再用 -->
+      <div :style="isCut ? 'color:#FF594A' : 'color:#000'">文章</div>
+      <!-- <div :style="!isCut ? 'color:#FF594A' : 'color:#000'" @click="isCutClick(false)">视频</div> -->
     </div>
     <!--富文本和视频展示的内容-->
     <div>
@@ -242,8 +243,8 @@ export default {
       this.isCut = type;
       if (type) {
         console.log("再次", this.value);
-        this.createFu();
-        this.editor.txt.html("");
+        // this.createFu();
+        // this.editor.txt.html("");
       }
     },
 
@@ -267,6 +268,10 @@ export default {
 <style>
 body {
   font-size: 14px;
+}
+.el-select-dropdown {
+  position: absolute !important;
+  z-index: 10001 !important;
 }
 </style>
 <style lang="scss" scoped>
@@ -313,7 +318,7 @@ body {
   min-height: 400px;
 
   .w-e-text-container {
-    height: 500px;
+    height: 450px;
   }
 
   ::v-deep .w-e-toolbar {
@@ -346,7 +351,7 @@ body {
   .selectContent-item {
     display: flex;
     align-items: center;
-    margin-top: 50px;
+    margin-top: 30px;
   }
   .selectContent-title {
     color: #000;

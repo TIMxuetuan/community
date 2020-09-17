@@ -40,7 +40,7 @@
           </div>
           <div class="loginOk-name">
             <div class="userMessage">
-              <img src="../assets/kongHead.png" alt />
+              <img src="../assets/kongHead.png" alt @click="goToMyArticle" />
               <div>{{ userInfoList.yg_name }}</div>
             </div>
             <div class="quitLogin" @click="logOut">
@@ -121,6 +121,14 @@ export default {
         path: "/writeArticle"
       });
       window.open(goTo.href, "_blank");
+    },
+
+    //跳转到我的内容页面
+    goToMyArticle() {
+      const goTo = this.$router.resolve({
+        path: "/myArticle"
+      });
+      window.open(goTo.href, "_blank");
     }
   }
 };
@@ -159,6 +167,7 @@ a {
   .leftLogo {
     display: inherit;
     align-items: center;
+    cursor: pointer;
     img {
       width: 36px;
       height: 36px;

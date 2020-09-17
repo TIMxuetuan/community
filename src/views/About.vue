@@ -5,14 +5,21 @@
       <forumHead :isPublish="isPublish"></forumHead>
     </div>
 
-    <div class="container">
+    <div v-if="isContentShow" class="commentAll">
+      <img src="../assets/no_comment.png" alt />
+      <div>还没有文章呢，试试发表你的文章</div>
+    </div>
+
+    <div v-else class="container">
       <!--左边内容展示-->
-      <listDetail :miDataList="miDataList" :isTopPing="isTopPing" @goToDetail="goToDetail" @giveLikeClick="giveLikeClick"></listDetail>
+      <listDetail
+        :miDataList="miDataList"
+        :isTopPing="isTopPing"
+        @goToDetail="goToDetail"
+        @giveLikeClick="giveLikeClick"
+      ></listDetail>
       <!--右边功能类型-->
       <!-- <div style="backgroundColor:#fff;width:310px">222</div> -->
-
-      <!--没有更多数据-->
-      <div class="noMore">没有更多数据了</div>
 
       <!--返回顶部-->
       <backTop></backTop>
@@ -33,6 +40,8 @@ export default {
   data() {
     return {
       userInfo: {},
+      isContentShow: false,
+      circleId: "",
       isPublish: true,
       circleListItem: {},
       page: 1,
@@ -45,9 +54,10 @@ export default {
     list: []
   },
   created() {
-    this.circleListItem = JSON.parse(localStorage.getItem("circleListItem"));
+    // this.circleListItem = JSON.parse(localStorage.getItem("circleListItem"));
+    this.circleId = JSON.parse(this.$route.query.circleId);
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    console.log(this.circleListItem, this.userInfo);
+    console.log("this.circleId", this.circleId);
   },
   mounted() {
     this.getDocumentList();
@@ -56,13 +66,13 @@ export default {
     //获取帖子列表
     getDocumentList() {
       let publicData = {
-        category_id: this.circleListItem.id,
-        yg_id: this.circleListItem.uid,
+        category_id: this.circleId,
+        // yg_id: this.circleListItem.uid,
         page: this.page,
         size: this.size
       };
       let jiami = {
-        category_id: this.circleListItem.id,
+        category_id: this.circleId,
         page: this.page,
         size: this.size
       };
@@ -73,6 +83,7 @@ export default {
           this.disposeRichText(res);
         } else {
           console.log(res.msg);
+          this.isContentShow = true;
         }
       });
     },
@@ -121,10 +132,17 @@ export default {
     //跳转详情页
     goToDetail(item) {
       console.log("跳转", item);
-      localStorage.setItem("circleDates", JSON.stringify(item));
+      // localStorage.setItem("circleDates", JSON.stringify(item));
       const goTo = this.$router.resolve({
-        path: "/circleDetails"
+        name: "circleDetails",
+        query: {
+          circleDates: item.id,
+          circleId: this.circleId
+        }
       });
+      // const goTo = this.$router.resolve({
+      //   path: "/circleDetails"
+      // });
       window.open(goTo.href, "_blank");
     }
   }
@@ -139,6 +157,20 @@ body {
 }
 </style>
 <style lang="scss" scoped>
+.commentAll {
+  padding: 30px 0 80px;
+  margin-top: 50px;
+  img {
+    width: 210px;
+    height: 210px;
+  }
+  div {
+    color: #b2b9c6;
+    font-size: 16px;
+    margin-top: 20px;
+  }
+}
+
 .about {
   position: relative;
   overflow: hidden;
@@ -154,15 +186,5 @@ body {
   height: 100%;
   margin: 70px auto 0;
 }
-.noMore {
-  width: 670px;
-  margin: 0 auto;
-  padding: 10px 0 20px;
-  font-size: 14px;
-  color: #999;
-  text-align: center;
-  background-color: #fff;
-}
-
 
 </style>
