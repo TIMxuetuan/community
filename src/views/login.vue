@@ -18,6 +18,7 @@
 import { _methods } from "../../libs/public";
 import Services from "../../libs/api.js";
 export default {
+  name: "circleLogin",
   data() {
     return {
       name: "",
@@ -29,6 +30,7 @@ export default {
   methods: {
     ..._methods,
     userLogin() {
+      localStorage.setItem("communityToken", "");
       if (!this.name) {
         _methods.tanChuang(this, "请输入账号");
         return;
@@ -52,9 +54,9 @@ export default {
         console.log("res", res);
         if (res.event == 100) {
           localStorage.setItem("userInfo", JSON.stringify(res.objList));
-          localStorage.setItem("token", res.objList.token);
+          localStorage.setItem("communityToken", res.objList.token);
           this.$router.push({
-            path: "/"
+            name: "index"
           });
         } else {
           console.log(res.msg);

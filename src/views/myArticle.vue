@@ -131,10 +131,13 @@ export default {
         name: "circleDetails",
         query: {
           circleDates: item.id,
-          circleId: item.category_id
+          circleId: item.category_id,
+          limits: item.category_id,
+          category_id: item.category_id,
+          uid: item.yg_id
         }
       });
-      // localStorage.setItem("circleDates", JSON.stringify(item));
+      localStorage.setItem("circleDates", JSON.stringify(item));
       // const goTo = this.$router.resolve({
       //   path: "/circleDetails"
       // });

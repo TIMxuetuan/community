@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { circleListsData } from "../../libs/public";
+// import { circleListsData } from "../../libs/public";
 import Services from "../../libs/api.js";
 export default {
   name: "index",
@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       userInfoList: {},
-      topicLists: circleListsData,
+      topicLists: {},
       page: 1,
       size: 10
     };
@@ -75,7 +75,8 @@ export default {
       const goTo = this.$router.resolve({
         name: "About",
         query: {
-          circleId: item.id
+          circleId: item.id,
+          uid: item.uid
         }
       });
       window.open(goTo.href, "_blank");

@@ -141,7 +141,7 @@ export default {
       Services.loginApi.userYftz(publicData, jiami).then(res => {
         if (res.event == 100) {
           this.userYftzList = res;
-          _methods.tanChuangOk(this, res.msg);
+          // _methods.tanChuangOk(this, res.msg);
           console.log("我的内容", res);
         } else {
           console.log(res.msg);

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>退出登录</title>
+    <desc>Created with Sketch.</desc>
+    <g id="4个底Tab页" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="内容详情页-文章" transform="translate(-1530.000000, -71.000000)">
+            <g id="编组-4" transform="translate(1530.000000, 71.000000)">
+                <rect id="矩形" x="0" y="0" width="20" height="20"></rect>
+                <path d="M11,2 L11,4 L6,4 C4.8954305,4 4,4.8954305 4,6 L4,14 C4,15.1045695 4.8954305,16 6,16 L11,16 L11,18 L6,18 C3.790861,18 2,16.209139 2,14 L2,6 C2,3.790861 3.790861,2 6,2 L11,2 Z" id="形状结合" fill="#FF594A"></path>
+                <rect id="矩形" fill="#FF594A" x="8" y="9" width="10" height="2" rx="1"></rect>
+                <rect id="矩形复制-5" fill="#FF594A" transform="translate(15.828427, 8.528427) rotate(-315.000000) translate(-15.828427, -8.528427) " x="12.8284271" y="7.52842712" width="6" height="2" rx="1"></rect>
+                <rect id="矩形复制-6" fill="#FF594A" transform="translate(15.828427, 11.428427) scale(1, -1) rotate(-315.000000) translate(-15.828427, -11.428427) " x="12.8284271" y="10.4284271" width="6" height="2" rx="1"></rect>
+                <circle id="椭圆形" fill="#FF594A" cx="11" cy="3" r="1"></circle>
+                <circle id="椭圆形复制" fill="#FF594A" cx="11" cy="17" r="1"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

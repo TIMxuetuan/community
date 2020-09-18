@@ -3,8 +3,8 @@
     <div class="headContent">
       <!--logo 名字-->
       <div class="leftLogo" @click="goIndex">
-        <img src="../assets/share-logo.png" alt />
-        <span>大众社区</span>
+        <img src="../assets/logo.png" alt />
+        <span>中建社区</span>
       </div>
 
       <!--右边登录、用户-->
@@ -80,14 +80,20 @@ export default {
   methods: {
     //检测用户是否登录
     isUserLogin() {
-      let userInfo = JSON.parse(localStorage.getItem("userInfo")) || "";
-      this.userInfoList = userInfo;
-      console.log(userInfo)
-      if (userInfo != "") {
+      let userInfo = localStorage.getItem("userInfo");
+      console.log(userInfo);
+      if (userInfo) {
+        this.userInfoList = JSON.parse(userInfo);
+      } else {
+        this.userInfoList = "";
+      }
+      console.log(this.userInfoList, this.userInfo == null);
+      if (this.userInfoList != "" && this.userInfoList != null) {
         this.isLogin = true;
       } else {
+        console.log("这里登录");
         this.$router.push({
-          path: "/login"
+          name: "circleLogin"
         });
       }
     },
@@ -100,7 +106,7 @@ export default {
 
     userLogin() {
       this.$router.push({
-        name: "login"
+        name: "circleLogin"
       });
     },
 
@@ -109,16 +115,16 @@ export default {
       console.log("退出");
       this.isLogin = false;
       localStorage.setItem("userInfo", "");
-      localStorage.setItem("token", "");
+      localStorage.setItem("communityToken", "");
       this.$router.push({
-        name: "login"
+        name: "circleLogin"
       });
     },
 
     //跳转到写文章页面
     gotoArticle() {
       const goTo = this.$router.resolve({
-        path: "/writeArticle"
+        name: "writeArticle"
       });
       window.open(goTo.href, "_blank");
     },
@@ -126,7 +132,7 @@ export default {
     //跳转到我的内容页面
     goToMyArticle() {
       const goTo = this.$router.resolve({
-        path: "/myArticle"
+        name: "myArticle"
       });
       window.open(goTo.href, "_blank");
     }
@@ -169,9 +175,10 @@ a {
     align-items: center;
     cursor: pointer;
     img {
-      width: 36px;
-      height: 36px;
+      width: 90px;
+      height: 50px;
       margin-right: 13px;
+      object-fit: cover;
     }
     span {
       font-size: 16px;
@@ -267,6 +274,9 @@ a {
         align-items: center;
         line-height: 60px;
         padding: 0 10px;
+        img {
+          cursor: pointer;
+        }
       }
 
       .quitLogin {

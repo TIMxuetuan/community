@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
-
+var outerPre = "";
 const routes = [
   {
     path: "/Home",
@@ -16,27 +16,32 @@ const routes = [
     component: () => import("../views/index.vue")
   },
   {
-    path: "/About",
+    // path: "/About",
+    path: `${outerPre}/About`,
     name: "About",
     component: () => import("../views/About.vue")
   },
   {
-    path: "/circleDetails",
+    // path: "/circleDetails",
+    path: `${outerPre}/circleDetails`,
     name: "circleDetails",
     component: () => import("../views/circleDetails.vue")
   },
   {
-    path: "/login",
-    name: "login",
+    // path: "/login",
+    path: `${outerPre}/circleLogin`,
+    name: "circleLogin",
     component: () => import("../views/login.vue")
   },
   {
-    path: "/writeArticle",
+    // path: "/writeArticle",
+    path: `${outerPre}/writeArticle`,
     name: "writeArticle",
     component: () => import("../views/writeArticle.vue")
   },
   {
-    path: "/myArticle",
+    // path: "/myArticle",
+    path: `${outerPre}/myArticle`,
     name: "myArticle",
     component: () => import("../views/myArticle.vue")
   }
@@ -44,7 +49,7 @@ const routes = [
 
 const router = new VueRouter({
   mode: "history",
-  base: "",
+  base: "bbs", //打包时需要解开
   routes
 });
 

@@ -132,6 +132,9 @@ export default {
     isTopPing: {
       type: Boolean,
       default: false
+    },
+    category_id: {
+      type: String
     }
   },
   created() {
@@ -159,7 +162,8 @@ export default {
       console.log("this.circleDates", this.circleDates);
       qz_admin.map(item => {
         console.log(item);
-        if (item.id == this.circleDates.category_id) {
+        if (item.id == this.category_id) {
+          console.log("进来了");
           this.isAdminShow = true;
         }
       });

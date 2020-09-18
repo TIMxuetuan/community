@@ -40,12 +40,13 @@ export default {
     return {
       userInfo: {},
       isContentShow: false,
-      circleId: "",
+      circleId: "", //圈子id
+      uid: "", //用户id
       isPublish: true,
       circleListItem: {},
       page: 1,
       size: 10,
-      miDataList: {},
+      miDataList: {}
     };
   },
   state: {
@@ -54,6 +55,7 @@ export default {
   created() {
     // this.circleListItem = JSON.parse(localStorage.getItem("circleListItem"));
     this.circleId = JSON.parse(this.$route.query.circleId);
+    this.uid = JSON.parse(this.$route.query.uid);
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     console.log("this.circleId", this.circleId);
   },
@@ -65,7 +67,7 @@ export default {
     getDocumentList() {
       let publicData = {
         category_id: this.circleId,
-        // yg_id: this.circleListItem.uid,
+        yg_id: this.uid,
         page: this.page,
         size: this.size
       };
@@ -135,7 +137,10 @@ export default {
         name: "circleDetails",
         query: {
           circleDates: item.id,
-          circleId: this.circleId
+          circleId: this.circleId,
+          limits: item.category_id,
+          category_id: item.category_id,
+          uid: this.uid
         }
       });
       // const goTo = this.$router.resolve({

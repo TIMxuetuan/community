@@ -11,7 +11,7 @@
       </div>
       <div class="noContent-text">
         内容已删除,去
-        <span @click="goToQuan">圈子</span>看看吧～
+        <span @click="goToQuan">列表</span>看看吧～
       </div>
     </div>
 
@@ -20,6 +20,7 @@
       <!--内容展示-->
       <circleDetailsCommon
         :miDataList="miDataList"
+        :category_id="category_id"
         @giveLikeClick="giveLikeClick"
         @deleteEssay="deleteEssay"
       ></circleDetailsCommon>
@@ -43,7 +44,6 @@
           </div>
         </div>
       </div>
-
       <!--评论-->
       <div class="remark" v-if="limitType == 4 || limitType == 3">
         <remark
@@ -82,6 +82,8 @@ export default {
     // this.circleDates = JSON.parse(localStorage.getItem("circleDates"));
     this.circleDates = JSON.parse(this.$route.query.circleDates);
     this.circleId = this.$route.query.circleId;
+    this.category_id = this.$route.query.category_id;
+    this.uid = this.$route.query.uid;
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     console.log("circleDates", this.circleDates, this.circleId);
     // this.miDataList.push(list);
@@ -93,6 +95,8 @@ export default {
       userInfo: {}, //用户数据
       circleDates: "", //从列表传递来的数据
       circleId: "", //圈子id
+      category_id: "", //权限id
+      uid: "", //类表传进来的
       miDataList: [], //帖子详情数据
       limitType: "", //控制评论回复是否展示
       authorId: "", //作者id
@@ -153,7 +157,7 @@ export default {
           this.miDataList = res.date;
           this.limitType = res.date[0].type;
           this.authorId = res.date[0].yg_id;
-          console.log("this.miDataList", this.miDataList);
+          console.log("this.authorId", this.authorId);
           this.getCommentlist();
         } else {
           console.log(res.msg);
@@ -253,6 +257,7 @@ export default {
         if (res.event == 100) {
           console.log("res", res);
           this.getCommentlist();
+          this.textarea = "";
           _methods.tanChuangOk(this, res.msg);
         } else {
           console.log(res.msg);
@@ -449,10 +454,12 @@ export default {
 
     //跳去圈子列表
     goToQuan() {
+      console.log(this.uid);
       this.$router.push({
         name: "About",
         query: {
-          circleId: this.circleId
+          circleId: this.circleId,
+          uid: this.uid
         }
       });
       // window.open(goTo.href, "_blank");

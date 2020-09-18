@@ -4,13 +4,14 @@ import { Message } from "element-ui";
 import MD5 from "md5";
 
 const ajax = axios.create({
-  // baseURL: "http://test.zhongjianedu.com/sns.php", // url前缀
+  // baseURL: "http://test.zhongjianedu.com/sns.php", // url前缀 测试
+  // baseURL: "https://dx.zhongjianedu.com/sns.php", // url前缀 正式服务器
   baseURL: "", // url前缀
   timeout: 10000, // 超时毫秒数
   withCredentials: true // 携带认证信息cookie
 });
 
-axios.defaults.headers.common["token"] = localStorage.getItem("token") || "";
+axios.defaults.headers.common["token"] = localStorage.getItem("communityToken") || "";
 
 /**
  get方式请求，url传参
@@ -74,16 +75,17 @@ const errback = error => {
     // 未登录
     if (error.code === 30001) {
       sessionStorage.clear();
-      window.location.href = "/login";
+      // window.location.href = "/login";
+      // window.location.href = "www.baidu.com";
       return;
     }
     return Promise.reject(error);
   }
   // 网络异常,或链接超时
-  Message({
-    message: error.message,
-    type: "error"
-  });
+  // Message({
+  //   message: error.message,
+  //   type: "error"
+  // });
   return Promise.reject({ data: error.message });
 };
 // 成功回调函数
@@ -128,7 +130,7 @@ const getConfig = (url, method, isjson, params, level = 0, jiamiData = {}) => {
     // 签名
     let timestamp = new Date().getTime();
     // 获取token
-    let token = localStorage.getItem("token") || "";
+    let token = localStorage.getItem("communityToken") || "";
     // 签名串
     var obj = {};
     // var paramsData = {};
@@ -158,7 +160,7 @@ const getConfig = (url, method, isjson, params, level = 0, jiamiData = {}) => {
     console.log("resource_code", resource_code);
 
     // let sign = signClick(token, timestamp, params);
-    console.log("token", token);
+    console.log("communityToken", token);
     config_.headers = {
       token,
       timestamp,
