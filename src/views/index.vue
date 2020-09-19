@@ -27,7 +27,7 @@
 </template>
 
 <script>
-// import { circleListsData } from "../../libs/public";
+import { _methods, Storage } from "../../libs/public";
 import Services from "../../libs/api.js";
 export default {
   name: "index",
@@ -45,7 +45,9 @@ export default {
     };
   },
   created() {
-    let userInfo = JSON.parse(localStorage.getItem("userInfo")) || "";
+    let storage = new Storage();
+    // let userInfo = JSON.parse(localStorage.getItem("userInfo")) || "";
+    let userInfo = storage.getItem("userInfo") || "";
     this.userInfoList = userInfo;
     this.getindexList();
   },
@@ -64,7 +66,8 @@ export default {
           console.log("res", res);
           this.topicLists = res.list;
         } else {
-          console.log(res.msg);
+          console.log(res.msg, _methods);
+          // _methods.tanChuang(this, res.msg);
         }
       });
     },

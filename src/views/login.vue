@@ -15,7 +15,7 @@
   </div>
 </template>
 <script>
-import { _methods } from "../../libs/public";
+import { _methods, Storage} from "../../libs/public";
 import Services from "../../libs/api.js";
 export default {
   name: "circleLogin",
@@ -25,11 +25,13 @@ export default {
       password: ""
     };
   },
-  created() {},
+  created() {
+  },
   mounted() {},
   methods: {
     ..._methods,
     userLogin() {
+      let storage = new Storage();
       localStorage.setItem("communityToken", "");
       if (!this.name) {
         _methods.tanChuang(this, "请输入账号");
@@ -53,8 +55,16 @@ export default {
       Services.loginApi.userLogin(postObj, jiamiData).then(res => {
         console.log("res", res);
         if (res.event == 100) {
-          localStorage.setItem("userInfo", JSON.stringify(res.objList));
-          localStorage.setItem("communityToken", res.objList.token);
+          // localStorage.setItem("userInfo", JSON.stringify(res.objList));
+          //  localStorage.setItem("communityToken", res.objList.token);
+          storage.setItem({
+            name: "userInfo",
+            value: res.objList
+          });
+           storage.setItem({
+            name: "communityToken",
+            value: res.objList.token
+          });
           this.$router.push({
             name: "index"
           });

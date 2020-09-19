@@ -40,7 +40,7 @@ export default {
   name: "circleLists",
   props: {
     topicLists: {
-      type: Array
+      type: [Object, Array]
     }
   },
   filters: {

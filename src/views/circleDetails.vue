@@ -67,7 +67,7 @@
   </div>
 </template>
 <script>
-import { _methods } from "../../libs/public";
+import { _methods, Storage } from "../../libs/public";
 import Services from "../../libs/api.js";
 
 export default {
@@ -79,13 +79,14 @@ export default {
     remark: () => import("../components/remark")
   },
   created() {
+    let storage = new Storage();
     // this.circleDates = JSON.parse(localStorage.getItem("circleDates"));
     this.circleDates = JSON.parse(this.$route.query.circleDates);
     this.circleId = this.$route.query.circleId;
     this.category_id = this.$route.query.category_id;
     this.uid = this.$route.query.uid;
-    this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    console.log("circleDates", this.circleDates, this.circleId);
+    this.userInfo = storage.getItem("userInfo");
+    console.log("this.userInfo", this.userInfo);
     // this.miDataList.push(list);
   },
   data() {

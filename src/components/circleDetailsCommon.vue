@@ -123,6 +123,7 @@
 </template>
 
 <script>
+import { Storage } from "../../libs/public";
 export default {
   name: "listDetail",
   props: {
@@ -138,8 +139,9 @@ export default {
     }
   },
   created() {
-    this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    this.circleDates = JSON.parse(localStorage.getItem("circleDates"));
+    let storage = new Storage();
+    this.userInfo = storage.getItem("userInfo");
+    console.log(this.userInfo)
     // this.miDataList.push(list);
   },
   data() {
@@ -159,7 +161,6 @@ export default {
     isAdminDelete() {
       let qz_admin = this.userInfo.qz_admin;
       console.log("qz_admin", qz_admin);
-      console.log("this.circleDates", this.circleDates);
       qz_admin.map(item => {
         console.log(item);
         if (item.id == this.category_id) {

@@ -63,6 +63,21 @@ let ceshi = {
   //内容发布--发布帖子
   postedInvitation(data, jiamiData) {
     return post("/postedInvitation", data, 2, jiamiData);
+  },
+
+  //帖子类型管理--添加帖子类型
+  addType(data, jiamiData) {
+    return post("/addType", data, 2, jiamiData);
+  },
+
+  //帖子类型管理--删除帖子类型
+  delType(data, jiamiData) {
+    return post("/delType", data, 2, jiamiData);
+  },
+
+  //圈子管理--查询圈子管理内容
+  category_list(data, jiamiData) {
+    return post("/category_list", data, 2, jiamiData);
   }
 
 }
@@ -128,10 +143,26 @@ let fabu = {
   //内容发布--发布帖子
   postedInvitation(data, jiamiData) {
     return post(`${_CONFIG.api}/User/posted`, data, 2, jiamiData);
+  },
+
+  //帖子类型管理--添加帖子类型
+  addType(data, jiamiData) {
+    return post(`${_CONFIG.api}/Sns/add_type`, data, 2, jiamiData);
+  },
+
+  //帖子类型管理--删除帖子类型
+  delType(data, jiamiData) {
+    return post(`${_CONFIG.api}/Sns/del_type`, data, 2, jiamiData);
+  },
+
+  //圈子管理--查询圈子管理内容
+  category_list(data, jiamiData) {
+    return post(`${_CONFIG.api}/Sns/category_list`, data, 2, jiamiData);
   }
 }
 const Services = {
-  loginApi: fabu
+  //测试api：ceshi ；正式api：fabu
+  loginApi: ceshi
 };
 
 export default Services;

@@ -8,7 +8,7 @@
     <!--主要内容-->
     <div class="write-article">
       <!--左边菜单栏-->
-      <div class="leftMenu">
+      <!-- <div class="leftMenu">
         <div class="leftMenu-item" @click="isSelectClick()">
           <img src="../assets/weiFabu.png" alt />
           <div class="leftMenu-item-text">内容发布</div>
@@ -18,7 +18,8 @@
           <img v-else src="../assets/weiMy.png" alt />
           <div style="color:#FF594A" class="leftMenu-item-text">我的内容</div>
         </div>
-      </div>
+      </div> -->
+      <leftArticle :isSelectValue="isSelectValue" @isSelectClick="isSelectClick"></leftArticle>
       <!--右边主要功能模块-->
       <div class="rightModule">
         <!--发布模块-->
@@ -58,24 +59,26 @@
   </div>
 </template>
 <script>
-import { _methods } from "../../libs/public";
+import { _methods, Storage } from "../../libs/public";
 import Services from "../../libs/api.js";
 
 export default {
   name: "myArticle",
   components: {
     forumHead: () => import("../components/forumHead"),
-    myMatter: () => import("../components/myMatter")
+    myMatter: () => import("../components/myMatter"),
+    leftArticle: () => import("../components/leftArticle")
   },
   created() {
-    this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    let storage = new Storage();
+    this.userInfo = storage.getItem("userInfo");
     console.log("userInfo", this.userInfo);
   },
   data() {
     return {
       userInfo: {},
       isContentShow: false,
-      isSelect: false, //true的时候代表打开内容发布模块、false代表我的内容模块
+      isSelectValue: 2, //true的时候代表打开内容发布模块、false代表我的内容模块
       wordse: "", //富文本内容
       category_id: "", //选中的圈子id
       type_id: "", //选中的类型id
@@ -92,9 +95,10 @@ export default {
   methods: {
     ..._methods,
     //内容发布和我的内容 互相切换
-    isSelectClick() {
+    isSelectClick(name) {
+      console.log(name);
       this.$router.push({
-        name: "writeArticle"
+        name: name
       });
     },
 

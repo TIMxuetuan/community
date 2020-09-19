@@ -2,6 +2,8 @@ import axios from "axios";
 // import { signClick } from './crypto';
 import { Message } from "element-ui";
 import MD5 from "md5";
+import { Storage } from "../libs/public.js";
+let storage = new Storage();
 
 const ajax = axios.create({
   // baseURL: "http://test.zhongjianedu.com/sns.php", // url前缀 测试
@@ -11,7 +13,8 @@ const ajax = axios.create({
   withCredentials: true // 携带认证信息cookie
 });
 
-axios.defaults.headers.common["token"] = localStorage.getItem("communityToken") || "";
+// axios.defaults.headers.common["token"] = localStorage.getItem("communityToken") || "";
+axios.defaults.headers.common["token"] = storage.getItem("communityToken") || "";
 
 /**
  get方式请求，url传参
@@ -90,9 +93,29 @@ const errback = error => {
 };
 // 成功回调函数
 const successback = res => {
+  console.log("aares", res)
   if (res.status === 200 && res.data.code !== 20000) {
+    let userInfo = storage.getItem("userInfo")
+    let communityToken = storage.getItem("communityToken")
+    storage.setItem({
+      name: "userInfo",
+      value: userInfo
+    });
+    storage.setItem({
+      name: "communityToken",
+      value: communityToken
+    });
     let errMsg = { "30002": "对不起无权限", "30003": "验签失败" };
     let msg = errMsg[res.data.code];
+    if (res.data.event == 401) {
+      Message({
+        message: res.data.msg,
+        type: "error"
+      });
+      //如果以后再出现 用户已在其他地方登陆，而直接跳转到其他登录页，就是这“/circleLogin”的路径问题：  这是替换的url：https://bbs.zhongjianedu.com/bbs/circleLogin
+      location.href = "/circleLogin"; 
+      return;
+    }
     if (msg) {
       Message({
         message: errMsg[res.data.code],
@@ -130,7 +153,7 @@ const getConfig = (url, method, isjson, params, level = 0, jiamiData = {}) => {
     // 签名
     let timestamp = new Date().getTime();
     // 获取token
-    let token = localStorage.getItem("communityToken") || "";
+    let token = storage.getItem("communityToken") || "";
     // 签名串
     var obj = {};
     // var paramsData = {};
@@ -151,7 +174,6 @@ const getConfig = (url, method, isjson, params, level = 0, jiamiData = {}) => {
 
     //sort key
     const reverse_key = Object.keys(obj).sort();
-    console.log("OBJ", obj);
     let resource_code =
       reverse_key
         .reduce((rst, v) => (rst += `${v}=${obj[v]}&`), "")
@@ -169,7 +191,7 @@ const getConfig = (url, method, isjson, params, level = 0, jiamiData = {}) => {
     params["timestamp"] = timestamp;
     params["sign"] = sign;
     params["token"] = token;
-    console.log("params", params);
+    // console.log("params", params);
   }
 
   // 表单提交参数
@@ -178,7 +200,7 @@ const getConfig = (url, method, isjson, params, level = 0, jiamiData = {}) => {
     config_.headers["Content-Type"] = "application/x-www-form-urlencoded";
     config_.responseType = "text";
     config_.transformRequest = [
-      function(data) {
+      function (data) {
         return param2String(data);
       }
     ];
@@ -189,7 +211,6 @@ const getConfig = (url, method, isjson, params, level = 0, jiamiData = {}) => {
   } else if (method in { post: true, put: true }) {
     config_.data = params;
   }
-  console.log("config_", config_);
   return config_;
 };
 

@@ -98,7 +98,31 @@ module.exports = {
         changeOrigin: true,
         secure: false,
         pathRewrite: { "^/postedInvitation": "" }
-      }
+      },
+
+      //帖子类型管理--添加帖子类型
+      "/addType": {
+        target: `${_CONFIG.api}/Sns/add_type`,
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { "^/addType": "" }
+      },
+
+      //帖子类型管理--删除帖子类型
+      "/delType": {
+        target: `${_CONFIG.api}/Sns/del_type`,
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { "^/delType": "" }
+      },
+
+      //圈子管理--查询圈子
+      "/category_list": {
+        target: `${_CONFIG.api}/Sns/category_list`,
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { "^/category_list": "" }
+      },
     }
   }
 };

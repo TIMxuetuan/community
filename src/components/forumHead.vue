@@ -57,6 +57,7 @@
 <script>
 import Vue from "vue";
 import { Button, Select } from "element-ui";
+import { _methods, Storage } from "../../libs/public";
 
 Vue.use(Button, Select);
 
@@ -80,10 +81,12 @@ export default {
   methods: {
     //检测用户是否登录
     isUserLogin() {
-      let userInfo = localStorage.getItem("userInfo");
+      console.log("111")
+      let storage = new Storage();
+      let userInfo = storage.getItem("userInfo") || "";
       console.log(userInfo);
       if (userInfo) {
-        this.userInfoList = JSON.parse(userInfo);
+        this.userInfoList = userInfo;
       } else {
         this.userInfoList = "";
       }
@@ -92,6 +95,7 @@ export default {
         this.isLogin = true;
       } else {
         console.log("这里登录");
+        _methods.tanChuang(this, "账户已过期，请重新登录");
         this.$router.push({
           name: "circleLogin"
         });

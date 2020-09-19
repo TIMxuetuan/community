@@ -28,7 +28,7 @@
 <script>
 // import xiaomiData from "../../libs/xiaomiData.js";
 import Services from "../../libs/api.js";
-
+import { Storage } from "../../libs/public";
 export default {
   name: "About",
   components: {
@@ -53,11 +53,12 @@ export default {
     list: []
   },
   created() {
+    let storage = new Storage()
     // this.circleListItem = JSON.parse(localStorage.getItem("circleListItem"));
     this.circleId = JSON.parse(this.$route.query.circleId);
     this.uid = JSON.parse(this.$route.query.uid);
-    this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    console.log("this.circleId", this.circleId);
+    this.userInfo = storage.getItem("userInfo");
+    console.log("this.circleId", this.userInfo);
   },
   mounted() {
     this.getDocumentList();
