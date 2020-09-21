@@ -56,6 +56,12 @@ const routes = [
     path: `${outerPre}/adminCircle`,
     name: "adminCircle",
     component: () => import("../views/adminCircle.vue")
+  },
+  {
+    // path: "/adminEssayList",
+    path: `${outerPre}/adminEssayList`,
+    name: "adminEssayList",
+    component: () => import("../views/adminEssayList.vue")
   }
 ];
 

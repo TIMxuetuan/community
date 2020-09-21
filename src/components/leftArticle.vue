@@ -38,7 +38,7 @@
         </div>
       </div>
       <!--我的管理-->
-      <div class="leftMenu-item">
+      <div class="leftMenu-item" v-if="this.userInfo.roles == 1">
         <img v-if="isSelectValue == 3" src="../assets/my.png" alt />
         <img v-else src="../assets/weiMy.png" alt />
         <div
@@ -61,11 +61,19 @@
         >
           圈子管理
         </div>
+        <div
+          :style="isAdminValue == 3 ? 'color:#FF594A' : 'color:#000'"
+          class="leftMenu-item-text listLi"
+          @click="isSelectClick('adminEssayList')"
+        >
+          帖子列表
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { Storage } from "../../libs/public";
 export default {
   name: "leftArticle",
   props: {
@@ -76,6 +84,11 @@ export default {
       type: Number, //控制管理模块三个内容显示；1：代表选中帖子类型、2：代表选中圈子管理、3：代表选中帖子管理
       defalut: 0
     }
+  },
+  created() {
+    let storage = new Storage();
+    this.userInfo = storage.getItem("userInfo");
+    console.log("userInfo", this.userInfo);
   },
   data() {
     return {};

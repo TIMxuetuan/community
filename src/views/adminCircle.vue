@@ -17,7 +17,7 @@
       <div class="rightModule">
         <!--添加按钮-->
         <div class="addContent">
-          <el-button type="primary" @click="centerDialogVisible = true">添加</el-button>
+          <el-button type="primary" @click="addCircleNew">添加</el-button>
         </div>
         <!--展示帖子类型列表-->
         <div class="maMatter-container">
@@ -37,9 +37,16 @@
                 >{{item.is_start | isStart}}</div>
               </div>
 
-              <!--删除帖子-->
               <div class="article-operate">
-                <div class="delete" @click="deleteClick(item)"></div>
+                <!--编辑帖子-->
+                <div class="redactBtn">
+                  <div class="redact-img" @click="redactClick(item)"></div>
+                </div>
+
+                <!--删除帖子-->
+                <div>
+                  <div class="delete" @click="deleteClick(item)"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -47,13 +54,34 @@
       </div>
     </div>
     <!--添加帖子类型弹窗-->
-    <el-dialog title="添加" :visible.sync="centerDialogVisible" width="30%" center>
+    <el-dialog title="添加" :visible.sync="centerDialogVisible" width="40%" center>
       <div class="add-dialog">
         <div class="titleInput">
-          <el-input v-model="titleInput" placeholder="请输入类型名称"></el-input>
+          <el-input v-model="titleInput" placeholder="请输入圈子名称"></el-input>
         </div>
         <div class="titleInput">
-          <el-input v-model="describeInput" placeholder="请输入类型描述"></el-input>
+          <el-input v-model="describeInput" placeholder="请输入图标地址链接"></el-input>
+        </div>
+        <div class="titleInput">
+          <el-select v-model="administratorValue" filterable multiple placeholder="请选择管理员">
+            <el-option
+              v-for="(item, index) in yglistAdmin"
+              :key="index"
+              :label="item.realname"
+              :value="item.userid"
+            ></el-option>
+          </el-select>
+        </div>
+        <div class="isSwitch" v-if="isSwitchShow">
+          <el-switch
+            v-model="is_startValue"
+            active-color="#13ce66"
+            inactive-color="#dcdfe6"
+            active-value="0"
+            inactive-value="1"
+            active-text="开启"
+            inactive-text="关闭"
+          ></el-switch>
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -68,7 +96,7 @@ import { _methods, Storage } from "../../libs/public";
 import Services from "../../libs/api.js";
 
 export default {
-  name: "writeArticle",
+  name: "adminCircle",
   components: {
     forumHead: () => import("../components/forumHead"),
     leftArticle: () => import("../components/leftArticle")
@@ -95,11 +123,18 @@ export default {
       circleOptions: {},
       centerDialogVisible: false,
       titleInput: "",
-      describeInput: ""
+      describeInput: "",
+      yglistAdmin: {}, //管理员内容
+      administratorValue: [], //修改时，管理员下拉框赋值
+      is_startValue: "", //圈子是否开启关闭；0开启，1关闭
+      isSwitchShow: false, //当点击修改圈子时，再出现
+      addOrAmend: "", //弹窗确定事件 区别添加 和 修改
+      redactValue: {} //修改圈子点击 获得的值
     };
   },
   mounted() {
     this.getindexList();
+    this.getYglist();
   },
   methods: {
     ..._methods,
@@ -121,6 +156,171 @@ export default {
       });
     },
 
+    //获取管理员接口
+    getYglist() {
+      let publicData = {
+        roles: this.userInfo.roles,
+        top: this.userInfo.top,
+        yg_id: this.userInfo.yg_id,
+        yg_name: this.userInfo.yg_name
+      };
+      Services.loginApi.yglist(publicData).then(res => {
+        if (res.event == 100) {
+          this.yglistAdmin = res.list;
+          console.log("this.yglistAdmin", this.yglistAdmin);
+        } else {
+          console.log(res.msg);
+        }
+      });
+    },
+
+    //添加圈子事件 和 修改圈子事件 区别 1:表示添加、2：表示修改
+    addCircleNew() {
+      this.centerDialogVisible = true;
+      this.addOrAmend = 1;
+      this.titleInput = "";
+      this.describeInput = "";
+      this.administratorValue = "";
+    },
+
+    //添加圈子接口
+    addTypeClick() {
+      console.log(this.titleInput);
+      console.log(this.describeInput);
+      console.log(JSON.stringify(this.administratorValue));
+      if (!this.titleInput) {
+        _methods.tanChuang(this, "请输入圈子名称");
+        return;
+      }
+      // if (!this.describeInput) {
+      //   _methods.tanChuang(this, "请输入图片链接地址");
+      //   return;
+      // }
+      if (!this.administratorValue) {
+        _methods.tanChuang(this, "请选择管理员");
+        return;
+      }
+
+      //添加圈子请求
+      if (this.addOrAmend == 1) {
+        let publicData = {
+          lb_name: this.titleInput,
+          img: this.describeInput,
+          admin_id: this.administratorValue,
+          roles: this.userInfo.roles,
+          top: this.userInfo.top,
+          yg_id: this.userInfo.yg_id,
+          yg_name: this.userInfo.yg_name
+        };
+        let jiami = {
+          lb_name: this.titleInput,
+          img: this.describeInput,
+          admin_id: this.administratorValue
+          // yg_id: this.userInfo.yg_id
+        };
+        Services.loginApi.add_category(publicData, jiami).then(res => {
+          if (res.event == 100) {
+            this.userYftzList = res;
+            // _methods.tanChuangOk(this, res.msg);
+            console.log("我的内容", res);
+            this.getindexList();
+            this.centerDialogVisible = false;
+          } else {
+            console.log(res.msg);
+            _methods.tanChuang(this, res.msg);
+          }
+        });
+      } else if (this.addOrAmend == 2) {
+        //编辑修改圈子请求
+        let publicData = {
+          id: this.redactValue.id,
+          lb_name: this.titleInput,
+          img: this.describeInput,
+          admin_id: this.administratorValue,
+          is_start: this.is_startValue,
+          roles: this.userInfo.roles,
+          top: this.userInfo.top,
+          yg_id: this.userInfo.yg_id,
+          yg_name: this.userInfo.yg_name
+        };
+        let jiami = {
+          id: this.redactValue.id,
+          lb_name: this.titleInput,
+          img: this.describeInput,
+          admin_id: this.administratorValue,
+          is_start: this.is_startValue
+        };
+        Services.loginApi.exit_category(publicData, jiami).then(res => {
+          if (res.event == 100) {
+            this.userYftzList = res;
+            // _methods.tanChuangOk(this, res.msg);
+            console.log("我的内容", res);
+            this.getindexList();
+            this.centerDialogVisible = false;
+          } else {
+            console.log(res.msg);
+            _methods.tanChuang(this, res.msg);
+          }
+        });
+      }
+    },
+
+    //修改圈子内容
+    redactClick(value) {
+      console.log(value);
+      this.redactValue = value;
+      this.centerDialogVisible = true;
+      this.isSwitchShow = true;
+      this.titleInput = value.lb_name;
+      this.describeInput = value.img;
+      this.administratorValue = value.admin_id.split(",");
+      this.is_startValue = value.is_start;
+      this.addOrAmend = 2;
+      console.log(this.administratorValue);
+    },
+
+    //删除圈子接口
+    deleteClick(item) {
+      this.$confirm("此操作将永久删除该圈子, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.deletePost(item);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+
+    //删除请求事件
+    deletePost(item) {
+      console.log(item);
+      let publicData = {
+        id: item.id,
+        roles: this.userInfo.roles,
+        top: this.userInfo.top,
+        yg_id: this.userInfo.yg_id,
+        yg_name: this.userInfo.yg_name
+      };
+      let jiami = {
+        id: item.id
+      };
+      Services.loginApi.del_category(publicData, jiami).then(res => {
+        if (res.event == 100) {
+          // _methods.tanChuangOk(this, res.msg);
+          console.log("我的内容", res);
+          this.getindexList();
+        } else {
+          console.log(res.msg);
+          _methods.tanChuang(this, res.msg);
+        }
+      });
+    },
 
     //内容发布和我的内容 互相切换
     isSelectClick(name) {
@@ -237,7 +437,13 @@ body {
   .article-operate {
     position: absolute;
     right: 0;
+    display: flex;
     cursor: pointer;
+    .redact-img {
+      width: 88px;
+      height: 38px;
+      background: url("../assets/redact.png") no-repeat;
+    }
     .delete {
       width: 88px;
       height: 38px;
@@ -247,6 +453,13 @@ body {
       background-color: rgba(243, 230, 229, 1);
       border-radius: 22px;
     }
+    .redact-img:hover {
+      background-color: rgba(243, 230, 229, 1);
+      border-radius: 22px;
+    }
+  }
+  .redactBtn {
+    margin-right: 15px;
   }
 }
 
@@ -271,10 +484,20 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 400px;
+  margin: 0 auto;
 }
 
 .titleInput {
-  width: 300px;
+  width: 400px;
   margin-bottom: 20px;
+}
+
+.el-select {
+  width: 100%;
+}
+
+.isSwitch {
+  width: 100%;
 }
 </style>

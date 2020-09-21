@@ -9,11 +9,7 @@
         @click="goToDetail(item)"
       >
         <div class="item-card">
-          <img
-            v-if="item.img == '' || item.img == null"
-            src="../assets/matterNot.png"
-            alt
-          />
+          <img v-if="item.img == '' || item.img == null" src="../assets/matterNot.png" alt />
           <img v-else :src="item.img" alt />
         </div>
         <div class="article-text">
@@ -29,6 +25,17 @@
       </div>
     </div>
     <!--分页-->
+    <div>
+      <el-pagination
+        background
+        layout="total, prev, pager, next"
+        @size-change="handleSizeChange"
+        @current-change="pageChangeClick"
+        :total="userYftzList.num * 1"
+        :current-page="1"
+        :page-size="10"
+      ></el-pagination>
+    </div>
   </div>
 </template>
 <script>
@@ -45,6 +52,19 @@ export default {
       goToDetail(item) {
         this.$emit("goToDetail", item);
       },
+
+      //分页
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      pageChangeClick: val => {
+        console.log(`每页 ${val} 条`);
+        this.$emit("pageChangeClick", val);
+      },
+      // pageChangeClick(val) {
+      //   console.log(`每页 ${val} 条`);
+      //   this.$emit("pageChangeClick", val);
+      // },
 
       //删除帖子
       deleteClick(item) {
@@ -63,7 +83,7 @@ export default {
   margin-top: 10px;
   overflow-x: hidden;
   overflow-y: scroll;
-  overflow: hidden;
+  // overflow: hidden;
 }
 .maMatter-container::-webkit-scrollbar {
   display: none;

@@ -100,6 +100,14 @@ module.exports = {
         pathRewrite: { "^/postedInvitation": "" }
       },
 
+      //帖子类型管理--查询帖子类型 crm
+      // "/crmType_list": {
+      //   target: `${_CONFIG.api}/Sns/type_list`,
+      //   changeOrigin: true,
+      //   secure: false,
+      //   pathRewrite: { "^/addType": "" }
+      // },
+
       //帖子类型管理--添加帖子类型
       "/addType": {
         target: `${_CONFIG.api}/Sns/add_type`,
@@ -122,6 +130,62 @@ module.exports = {
         changeOrigin: true,
         secure: false,
         pathRewrite: { "^/category_list": "" }
+      },
+
+      //圈子管理--查询管理员 http://test.zhongjianedu.com/sns.php/Sns/yglist
+      "/yglist": {
+        target: `${_CONFIG.api}/Sns/yglist`,
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { "^/yglist": "" }
+      },
+
+      //圈子管理--添加圈子接口
+      "/add_category": {
+        target: `${_CONFIG.api}/Sns/add_category`,
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { "^/add_category": "" }
+      },
+
+      //圈子管理--编辑圈子接口
+      "/exit_category": {
+        target: `${_CONFIG.api}/Sns/exit_category`,
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { "^/exit_category": "" }
+      },
+
+      //圈子管理--删除圈子接口
+      "/del_category": {
+        target: `${_CONFIG.api}/Sns/del_category`,
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { "^/del_category": "" }
+      },
+
+      //后台帖子列表管理--获取帖子列表
+      "/crmDocumentList": {
+        target: `${_CONFIG.api}/Sns/documentList`,
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { "^/crmDocumentList": "" }
+      },
+
+      //后台帖子列表管理--获取浏览记录
+      "/readList": {
+        target: `${_CONFIG.api}/Sns/readList`,
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { "^/readList": "" }
+      },
+
+      //后台帖子列表管理--删除帖子
+      "/del_document": {
+        target: `${_CONFIG.api}/Sns/del_document`,
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { "^/del_document": "" }
       },
     }
   }

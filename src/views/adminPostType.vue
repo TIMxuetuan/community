@@ -17,7 +17,7 @@
       <div class="rightModule">
         <!--添加按钮-->
         <div class="addContent">
-          <el-button type="primary" @click="centerDialogVisible = true">添加</el-button>
+          <el-button type="primary" @click="addDialogShow">添加</el-button>
         </div>
 
         <!--展示帖子类型列表-->
@@ -75,7 +75,7 @@ import { _methods, Storage } from "../../libs/public";
 import Services from "../../libs/api.js";
 
 export default {
-  name: "writeArticle",
+  name: "adminPostType",
   components: {
     forumHead: () => import("../components/forumHead"),
     leftArticle: () => import("../components/leftArticle")
@@ -135,6 +135,13 @@ export default {
       });
     },
 
+    //弹出添加弹窗
+    addDialogShow() {
+      this.centerDialogVisible = true;
+      this.titleInput = "";
+      this.describeInput = "";
+    },
+
     //添加帖子类型
     addTypeClick() {
       if (!this.titleInput) {
@@ -170,8 +177,30 @@ export default {
 
     //删除帖子类型
     deleteClick(item) {
+      this.$confirm("此操作将永久删除该帖子类型, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.deletePost(item);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+
+    //删除请求事件
+    deletePost(item) {
       let publicData = {
-        id: item.id
+        id: item.id,
+        roles: this.userInfo.roles,
+        top: this.userInfo.top,
+        yg_id: this.userInfo.yg_id,
+        yg_name: this.userInfo.yg_name
       };
       let jiami = {
         id: item.id

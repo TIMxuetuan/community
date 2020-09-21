@@ -78,9 +78,44 @@ let ceshi = {
   //圈子管理--查询圈子管理内容
   category_list(data, jiamiData) {
     return post("/category_list", data, 2, jiamiData);
-  }
+  },
 
-}
+  //圈子管理--查询圈子管理员接口
+  yglist(data, jiamiData) {
+    return post("/yglist", data, 2, jiamiData);
+  },
+
+  //圈子管理--添加圈子接口
+  add_category(data, jiamiData) {
+    return post("/add_category", data, 2, jiamiData);
+  },
+
+  //圈子管理--编辑圈子接口
+  exit_category(data, jiamiData) {
+    return post("/exit_category", data, 2, jiamiData);
+  },
+
+  //圈子管理--删除圈子接口
+  del_category(data, jiamiData) {
+    return post("/del_category", data, 2, jiamiData);
+  },
+
+  //后台帖子列表管理--贴子列表管理 加搜索
+  crmDocumentList(data, jiamiData) {
+    return post("/crmDocumentList", data, 2, jiamiData);
+  },
+
+  //后台帖子列表管理--获取浏览记录
+  readList(data, jiamiData) {
+    return post("/readList", data, 2, jiamiData);
+  },
+
+  //后台帖子列表管理--删除帖子
+  del_document(data, jiamiData) {
+    return post("/del_document", data, 2, jiamiData);
+  },
+
+};
 
 //正式发布实用
 let fabu = {
@@ -158,7 +193,42 @@ let fabu = {
   //圈子管理--查询圈子管理内容
   category_list(data, jiamiData) {
     return post(`${_CONFIG.api}/Sns/category_list`, data, 2, jiamiData);
-  }
+  },
+
+  //圈子管理--查询圈子管理员接口
+  yglist(data, jiamiData) {
+    return post(`${_CONFIG.api}/Sns/yglist`, data, 2, jiamiData);
+  },
+
+  //圈子管理--添加圈子接口
+  add_category(data, jiamiData) {
+    return post(`${_CONFIG.api}/Sns/add_category`, data, 2, jiamiData);
+  },
+
+  //圈子管理--编辑圈子接口
+  exit_category(data, jiamiData) {
+    return post(`${_CONFIG.api}/Sns/exit_category`, data, 2, jiamiData);
+  },
+
+  //圈子管理--删除圈子接口
+  del_category(data, jiamiData) {
+    return post(`${_CONFIG.api}/Sns/del_category`, data, 2, jiamiData);
+  },
+
+  //后台帖子列表管理--贴子列表管理 加搜索
+  crmDocumentList(data, jiamiData) {
+    return post(`${_CONFIG.api}/Sns/documentList`, data, 2, jiamiData);
+  },
+
+  //后台帖子列表管理--获取浏览记录
+  readList(data, jiamiData) {
+    return post(`${_CONFIG.api}/Sns/readList`, data, 2, jiamiData);
+  },
+
+  //后台帖子列表管理--删除帖子
+  del_document(data, jiamiData) {
+    return post(`${_CONFIG.api}/Sns/del_document`, data, 2, jiamiData);
+  },
 }
 const Services = {
   //测试api：ceshi ；正式api：fabu

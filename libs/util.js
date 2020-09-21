@@ -91,6 +91,7 @@ const errback = error => {
   // });
   return Promise.reject({ data: error.message });
 };
+
 // 成功回调函数
 const successback = res => {
   console.log("aares", res)
@@ -109,11 +110,13 @@ const successback = res => {
     let msg = errMsg[res.data.code];
     if (res.data.event == 401) {
       Message({
-        message: res.data.msg,
+        message: "账号已在其他地方登录",
         type: "error"
       });
       //如果以后再出现 用户已在其他地方登陆，而直接跳转到其他登录页，就是这“/circleLogin”的路径问题：  这是替换的url：https://bbs.zhongjianedu.com/bbs/circleLogin
-      location.href = "/circleLogin"; 
+      // location.href = "/circleLogin";
+      console.log("跳转到其他登录页已解决");
+      window.location.href = "https://bbs.zhongjianedu.com/bbs/circleLogin";
       return;
     }
     if (msg) {

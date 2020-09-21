@@ -52,6 +52,7 @@
             :userYftzList="userYftzList"
             @goToDetail="goToDetail"
             @deleteClick="deleteClick"
+            @pageChangeClick="pageChangeClick"
           ></myMatter>
         </div>
       </div>
@@ -126,6 +127,13 @@ export default {
           this.isContentShow = true;
         }
       });
+    },
+
+    //分页
+    pageChangeClick(val) {
+      console.log("当前页", val);
+      this.page = val;
+      this.getUserYftz();
     },
 
     //我的内容--跳转详情页
