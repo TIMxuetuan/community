@@ -130,9 +130,10 @@ export default {
     createFu() {
       this.editor = new E(this.$refs.toolbar, this.$refs.editor);
       this.editor.customConfig.uploadImgShowBase64 = false; // base 64 存储图片
-      this.editor.customConfig.uploadImgServer = "https://www.zjtaoke.cn/trains2/uploadFiles";
-        // "http://otp.cdinfotech.top/file/upload_images"; // 配置服务器端地址
-        // "/shangchuan";
+      this.editor.customConfig.uploadImgServer =
+        "https://bbs.zhongjianedu.com/sns.php/trains2/uploadFiles";
+      // "https://www.zjtaoke.cn/trains2/uploadFiles"; // 配置服务器端地址 --淘课ip
+      // "/shangchuan";
       this.editor.customConfig.uploadImgHeaders = {
         Accept: "text/x-json"
       }; // 自定义 header

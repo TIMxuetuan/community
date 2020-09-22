@@ -20,7 +20,7 @@
           </div>
           <div class="publishClick">
             <ul class="publish-ul">
-              <li>
+              <!-- <li>
                 <img src="../assets/wenti.png" alt />
                 <span>提问题</span>
               </li>
@@ -31,7 +31,7 @@
               <li>
                 <img src="../assets/shipin.png" alt />
                 <span>上传视频</span>
-              </li>
+              </li> -->
               <li @click="gotoArticle">
                 <img src="../assets/wenzhang.png" alt />
                 <span>写文章</span>

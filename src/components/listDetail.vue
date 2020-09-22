@@ -3,7 +3,7 @@
   <div class="center-detail">
     <div class="left-content">
       <!--置顶帖子-->
-      <div class="topInvitation" v-if="miDataList.zd != ''">
+      <div class="topInvitation" v-if="miDataList.zd != '' && miDataList.zd != null">
         <div
           class="topInvitation-item"
           v-for="(topItem, index) in miDataList.zd"
@@ -19,7 +19,7 @@
       <!--正常帖子-->
       <div
         class="content-items"
-        v-for="(item, index) in miDataList.list"
+        v-for="(item, index) in detailList"
         :key="index"
         @click="goToDetail(item)"
       >
@@ -126,22 +126,35 @@
         </div>
       </div>
 
-      <!--没有更多数据-->
-      <div class="noMore">没有更多数据了</div>
+      <!--分页 滚动加载-->
+      <infinite-loading @infinite="infiniteHandler">
+        <span slot="no-more" class="noMore">
+          <!--没有更多数据-->
+          没有更多数据了
+        </span>
+        <div slot="no-results" class="noMore">暂无数据</div>
+      </infinite-loading>
     </div>
   </div>
 </template>
 
 <script>
+import InfiniteLoading from "vue-infinite-loading";
 export default {
   name: "listDetail",
   props: {
     miDataList: {
       type: Object
+    },
+    detailList: {
+      type: Array
     }
   },
+  components: { InfiniteLoading },
   data() {
     return {
+      page: 1,
+      size: 10,
       isTopPing: true,
       isShow: false
     };
@@ -151,6 +164,11 @@ export default {
     console.log("miDataList");
   },
   methods: {
+    //滚动加载
+    infiniteHandler($state) {
+      this.$emit("infiniteHandler", $state);
+    },
+
     //跳转详情页面
     goToDetail(item) {
       this.$emit("goToDetail", item);

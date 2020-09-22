@@ -42,7 +42,7 @@
             <span>你还没有发表过内容</span>
           </div>
           <div>
-            <el-button type="danger" round @click="isSelectClick">
+            <el-button type="danger" round @click="lijiPush">
               立即发表
             </el-button>
           </div>
@@ -100,6 +100,13 @@ export default {
       console.log(name);
       this.$router.push({
         name: name
+      });
+    },
+
+    //立即发表
+    lijiPush() {
+      this.$router.push({
+        name: "writeArticle"
       });
     },
 
@@ -263,6 +270,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 20px;
   }
   img {
     width: 200px;
