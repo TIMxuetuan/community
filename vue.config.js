@@ -1,7 +1,8 @@
 var { _CONFIG } = require("./config.js");
 console.log("_CONFIG.api",_CONFIG.api)
 module.exports = {
-  publicPath: "/bbs", //正式打包时需要添加bbs
+  // publicPath: "/bbs", //正式打包时需要添加bbs 之前的
+  // publicPath: "", //正式打包时需要添加bbs
   outputDir: "dist", // 构建输出目录
   assetsDir: "assets", // 静态资源目录 (js, css, img, fonts)
   devServer: {
@@ -86,7 +87,8 @@ module.exports = {
 
       //我的--上传图片
       "/shangchuan": {
-        target: "https://www.zjtaoke.cn/trains2/uploadFiles",
+        // target: "https://www.zjtaoke.cn/trains2/uploadFiles",
+        target: "http://i.taoke4.com/sns.php/trains2/uploadFiles",
         changeOrigin: true,
         secure: false,
         pathRewrite: { "^/shangchuan": "" }

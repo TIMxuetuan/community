@@ -22,10 +22,19 @@
         <!--展示帖子类型列表-->
         <div class="maMatter-container">
           <div>
-            <div class="maMatter-item" v-for="(item, index) in circleOptions.list" :key="index">
+            <div
+              class="maMatter-item"
+              v-for="(item, index) in circleOptions.list"
+              :key="index"
+            >
               <div class="item-card">
-                <img v-if="item.img == '' || item.img == null" src="../assets/matterNot.png" alt />
-                <img v-else :src="item.img" alt />
+                <img
+                  class="moRen"
+                  v-if="item.img == '' || item.img == null"
+                  src="../assets/matterNot.png"
+                  alt
+                />
+                <img class="tuBiao" v-else :src="item.img" alt />
               </div>
               <div class="article-text">
                 <div class="article-title">{{ item.lb_name }}</div>
@@ -34,7 +43,9 @@
                 <div
                   class="article-info"
                   :class="item.is_start == 0 ? 'passed' : 'no-passed'"
-                >{{item.is_start | isStart}}</div>
+                >
+                  {{ item.is_start | isStart }}
+                </div>
               </div>
 
               <div class="article-operate">
@@ -54,16 +65,34 @@
       </div>
     </div>
     <!--添加帖子类型弹窗-->
-    <el-dialog title="添加" :visible.sync="centerDialogVisible" width="40%" center>
+    <el-dialog
+      title="添加"
+      :visible.sync="centerDialogVisible"
+      :destroy-on-close="true"
+      @close="quXiao"
+      width="40%"
+      center
+    >
       <div class="add-dialog">
         <div class="titleInput">
-          <el-input v-model="titleInput" placeholder="请输入圈子名称"></el-input>
+          <el-input
+            v-model="titleInput"
+            placeholder="请输入圈子名称"
+          ></el-input>
         </div>
+        <!-- <div class="titleInput">
+          <el-input
+            v-model="describeInput"
+            placeholder="请输入图标地址链接"
+          ></el-input>
+        </div> -->
         <div class="titleInput">
-          <el-input v-model="describeInput" placeholder="请输入图标地址链接"></el-input>
-        </div>
-        <div class="titleInput">
-          <el-select v-model="administratorValue" filterable multiple placeholder="请选择管理员">
+          <el-select
+            v-model="administratorValue"
+            filterable
+            multiple
+            placeholder="请选择管理员"
+          >
             <el-option
               v-for="(item, index) in yglistAdmin"
               :key="index"
@@ -72,6 +101,26 @@
             ></el-option>
           </el-select>
         </div>
+
+        <div class="shangTu">
+          <el-upload
+            :action="actionUrl"
+            :limit="1"
+            :file-list="dialogImageUrl"
+            list-type="picture-card"
+            :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove"
+            :on-exceed="handExceed"
+            :on-success="handSuccess"
+          >
+            <i class="el-icon-plus"></i>
+          </el-upload>
+
+          <el-dialog :modal="false" :visible.sync="dialogVisible">
+            <img width="100%" :src="describeInput" alt="" />
+          </el-dialog>
+        </div>
+
         <div class="isSwitch" v-if="isSwitchShow">
           <el-switch
             v-model="is_startValue"
@@ -85,7 +134,7 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="centerDialogVisible = false">取 消</el-button>
+        <el-button @click="quXiao">取 消</el-button>
         <el-button type="primary" @click="addTypeClick">确 定</el-button>
       </span>
     </el-dialog>
@@ -103,7 +152,6 @@ export default {
   },
   filters: {
     isStart(value) {
-      console.log(value);
       return value == 0 ? "开启" : "关闭";
     }
   },
@@ -129,7 +177,11 @@ export default {
       is_startValue: "", //圈子是否开启关闭；0开启，1关闭
       isSwitchShow: false, //当点击修改圈子时，再出现
       addOrAmend: "", //弹窗确定事件 区别添加 和 修改
-      redactValue: {} //修改圈子点击 获得的值
+      redactValue: {}, //修改圈子点击 获得的值
+      // actionUrl: "/shangchuan", //本地测试使用代理
+      actionUrl: "http://i.taoke4.com/sns.php/trains2/uploadFiles", //服务器使用
+      dialogImageUrl: [],
+      dialogVisible: false
     };
   },
   mounted() {
@@ -174,28 +226,65 @@ export default {
       });
     },
 
+    //上传图片--删除图片
+    handleRemove(file) {
+      console.log(file);
+      this.dialogImageUrl.splice(0, 1);
+    },
+    //上传图片--成功事件
+    handSuccess(response, file, fileList) {
+      console.log(response, file, fileList);
+      console.log(fileList);
+      this.dialogImageUrl = fileList;
+    },
+    handlePictureCardPreview(file) {
+      this.describeInput = file.url;
+      this.dialogVisible = true;
+      console.log("查看图片", this.describeInput);
+    },
+    handExceed(file, fileList) {
+      console.log(file.length, fileList);
+      let num = file.length;
+      if (num == 1) {
+        this.$message({
+          showClose: true,
+          offset: 100,
+          message: "只能上传一张封面"
+        });
+      }
+    },
+
+    //点击取消，清除数据
+    quXiao() {
+      this.centerDialogVisible = false;
+      this.titleInput = "";
+      this.dialogImageUrl = [];
+      this.administratorValue = "";
+    },
+
     //添加圈子事件 和 修改圈子事件 区别 1:表示添加、2：表示修改
     addCircleNew() {
       this.centerDialogVisible = true;
       this.addOrAmend = 1;
       this.titleInput = "";
-      this.describeInput = "";
+      this.dialogImageUrl = [];
       this.administratorValue = "";
     },
 
     //添加圈子接口
     addTypeClick() {
-      console.log(this.titleInput);
-      console.log(this.describeInput);
+      var ingUrl = "";
+      if (this.dialogImageUrl.length > 0) {
+        ingUrl = this.dialogImageUrl[0].response.url;
+      } else {
+        ingUrl = "";
+      }
+      console.log(ingUrl);
       console.log(JSON.stringify(this.administratorValue));
       if (!this.titleInput) {
         _methods.tanChuang(this, "请输入圈子名称");
         return;
       }
-      // if (!this.describeInput) {
-      //   _methods.tanChuang(this, "请输入图片链接地址");
-      //   return;
-      // }
       if (!this.administratorValue) {
         _methods.tanChuang(this, "请选择管理员");
         return;
@@ -205,7 +294,7 @@ export default {
       if (this.addOrAmend == 1) {
         let publicData = {
           lb_name: this.titleInput,
-          img: this.describeInput,
+          img: ingUrl,
           admin_id: this.administratorValue,
           roles: this.userInfo.roles,
           top: this.userInfo.top,
@@ -214,7 +303,7 @@ export default {
         };
         let jiami = {
           lb_name: this.titleInput,
-          img: this.describeInput,
+          img: ingUrl,
           admin_id: this.administratorValue
           // yg_id: this.userInfo.yg_id
         };
@@ -235,7 +324,7 @@ export default {
         let publicData = {
           id: this.redactValue.id,
           lb_name: this.titleInput,
-          img: this.describeInput,
+          img: ingUrl,
           admin_id: this.administratorValue,
           is_start: this.is_startValue,
           roles: this.userInfo.roles,
@@ -246,7 +335,7 @@ export default {
         let jiami = {
           id: this.redactValue.id,
           lb_name: this.titleInput,
-          img: this.describeInput,
+          img: ingUrl,
           admin_id: this.administratorValue,
           is_start: this.is_startValue
         };
@@ -272,11 +361,21 @@ export default {
       this.centerDialogVisible = true;
       this.isSwitchShow = true;
       this.titleInput = value.lb_name;
-      this.describeInput = value.img;
+      if (value.img != "") {
+        let objectData = {
+          name: "oneImg",
+          url: value.img
+        };
+        console.log(objectData);
+        let imgLists = [];
+        imgLists.push(objectData);
+
+        this.dialogImageUrl = imgLists;
+      }
+      console.log(this.dialogImageUrl);
       this.administratorValue = value.admin_id.split(",");
       this.is_startValue = value.is_start;
       this.addOrAmend = 2;
-      console.log(this.administratorValue);
     },
 
     //删除圈子接口
@@ -404,10 +503,14 @@ body {
     object-fit: fill;
     display: flex;
     background: #f5f5f5;
-    img {
+    .moRen {
       width: 36px;
       height: 30px;
       margin: auto;
+    }
+    .tuBiao {
+      width: 100%;
+      height: 100%;
     }
   }
 
@@ -499,5 +602,14 @@ body {
 
 .isSwitch {
   width: 100%;
+}
+
+.shangTu {
+  width: 100%;
+  margin-bottom: 20px;
+  justify-content: flex-start;
+  .el-upload-list__item.is-ready {
+    display: none;
+  }
 }
 </style>

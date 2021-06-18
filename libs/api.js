@@ -228,11 +228,11 @@ let fabu = {
   //后台帖子列表管理--删除帖子
   del_document(data, jiamiData) {
     return post(`${_CONFIG.api}/Sns/del_document`, data, 2, jiamiData);
-  },
+  }
 }
 const Services = {
   //测试api：ceshi ；正式api：fabu
-  loginApi: ceshi
+  loginApi: fabu
 };
 
 export default Services;

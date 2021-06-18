@@ -4,7 +4,7 @@
       <!--logo 名字-->
       <div class="leftLogo" @click="goIndex">
         <img src="../assets/logo.png" alt />
-        <span>中建社区</span>
+        <span>内部员工社区</span>
       </div>
 
       <!--右边登录、用户-->
@@ -40,7 +40,18 @@
           </div>
           <div class="loginOk-name">
             <div class="userMessage">
-              <img src="../assets/kongHead.png" alt @click="goToMyArticle" />
+              <img
+                v-if="userInfoList.photo"
+                :src="userInfoList.photo"
+                @click="goToMyArticle"
+                alt
+              />
+              <img
+                v-else
+                src="../assets/kongHead.png"
+                alt
+                @click="goToMyArticle"
+              />
               <div>{{ userInfoList.yg_name }}</div>
             </div>
             <div class="quitLogin" @click="logOut">
@@ -66,13 +77,13 @@ export default {
   props: {
     isPublish: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       userInfoList: {},
-      isLogin: false
+      isLogin: false,
     };
   },
   created() {
@@ -81,7 +92,7 @@ export default {
   methods: {
     //检测用户是否登录
     isUserLogin() {
-      console.log("111")
+      console.log("111");
       let storage = new Storage();
       let userInfo = storage.getItem("userInfo") || "";
       console.log(userInfo);
@@ -97,7 +108,7 @@ export default {
         console.log("这里登录");
         _methods.tanChuang(this, "账户已过期，请重新登录");
         this.$router.push({
-          name: "circleLogin"
+          name: "circleLogin",
         });
       }
     },
@@ -110,7 +121,7 @@ export default {
 
     userLogin() {
       this.$router.push({
-        name: "circleLogin"
+        name: "circleLogin",
       });
     },
 
@@ -121,14 +132,14 @@ export default {
       localStorage.setItem("userInfo", "");
       localStorage.setItem("communityToken", "");
       this.$router.push({
-        name: "circleLogin"
+        name: "circleLogin",
       });
     },
 
     //跳转到写文章页面
     gotoArticle() {
       const goTo = this.$router.resolve({
-        name: "writeArticle"
+        name: "writeArticle",
       });
       window.open(goTo.href, "_blank");
     },
@@ -136,11 +147,11 @@ export default {
     //跳转到我的内容页面
     goToMyArticle() {
       const goTo = this.$router.resolve({
-        name: "myArticle"
+        name: "myArticle",
       });
       window.open(goTo.href, "_blank");
-    }
-  }
+    },
+  },
 };
 </script>
 

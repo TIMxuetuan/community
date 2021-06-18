@@ -66,8 +66,10 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  mode: "history",
-  base: "bbs", //打包时需要解开
+  // mode: "history",
+  mode: "hash",
+  // base: "bbs", //打包时需要解开 之前的
+  // base: "/", //打包时需要解开
   routes
 });
 

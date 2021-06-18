@@ -116,7 +116,8 @@ const successback = res => {
       //如果以后再出现 用户已在其他地方登陆，而直接跳转到其他登录页，就是这“/circleLogin”的路径问题：  这是替换的url：https://bbs.zhongjianedu.com/bbs/circleLogin
       // location.href = "/circleLogin";
       console.log("跳转到其他登录页已解决");
-      window.location.href = "https://bbs.zhongjianedu.com/bbs/circleLogin";
+      // window.location.href = "https://bbs.zhongjianedu.com/bbs/circleLogin"; //之前的
+      window.location.href = "http://i.taoke4.com/#/circleLogin"; //之前的
       return;
     }
     if (msg) {

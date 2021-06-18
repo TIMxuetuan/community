@@ -12,7 +12,11 @@
       <div v-if="isCut">
         <!--标题-->
         <div class="titleModule">
-          <el-input placeholder="请输入文章标题" v-model="titleInput" clearable></el-input>
+          <el-input
+            placeholder="请输入文章标题"
+            v-model="titleInput"
+            clearable
+          ></el-input>
         </div>
         <!--富文本输入框-->
         <div class="editorPanel">
@@ -60,7 +64,13 @@
         </div>
         <!--发表按钮-->
         <div class="publishBtn">
-          <el-button type="danger" round class="publishBtn-fa" @click="publishClick">发表</el-button>
+          <el-button
+            type="danger"
+            round
+            class="publishBtn-fa"
+            @click="publishClick"
+            >发表</el-button
+          >
         </div>
       </div>
       <!--上传视频模块-->
@@ -131,9 +141,9 @@ export default {
       this.editor = new E(this.$refs.toolbar, this.$refs.editor);
       this.editor.customConfig.uploadImgShowBase64 = false; // base 64 存储图片
       this.editor.customConfig.uploadImgServer =
-        // "https://bbs.zhongjianedu.com/sns.php/trains2/uploadFiles";
-        // "https://www.zjtaoke.cn/trains2/uploadFiles"; // 配置服务器端地址 --淘课ip
-      "/shangchuan";
+        "http://i.taoke4.com/sns.php/trains2/uploadFiles"; //服务器使用
+      // "https://www.zjtaoke.cn/trains2/uploadFiles"; // 配置服务器端地址 --淘课ip
+      // "/shangchuan"; //本地使用
       this.editor.customConfig.uploadImgHeaders = {
         Accept: "text/x-json"
       }; // 自定义 header
